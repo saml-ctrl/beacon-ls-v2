@@ -1,0 +1,39 @@
+<template>
+  <lightning-modal-header label="Log Schedule Extension Notification"></lightning-modal-header>
+  <lightning-modal-body>
+    <ui-flow-progress steps={steps} current={step}></ui-flow-progress>
+    <div class="slds-p-around_medium">
+      <template lwc:if={isStep0}>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+          An extension beyond 30 days past the Estimated Schedule triggers a Change Order per the SOW.
+        </p>
+        <lightning-input type="number" label="Extension Days" value={extensionDays} onchange={handleDays} class="slds-m-bottom_small"></lightning-input>
+        <lightning-input type="date" label="Notification Date" value={notificationDate} onchange={handleDate}></lightning-input>
+      </template>
+      <template lwc:if={isStep1}>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">Select the time-based line items to extend.</p>
+        <lightning-input type="checkbox" label="Clinical Operations Support ×3" checked={selClinops} onchange={handleClinops}></lightning-input>
+        <lightning-input type="checkbox" label="Scientific PM (Monthly Retainer) ×2" checked={selScipm} onchange={handleScipm}></lightning-input>
+      </template>
+      <template lwc:if={isStep2}>
+        <ul class="slds-list_dotted">
+          <template for:each={reviewItems} for:item="item">
+            <li key={item.key} class="slds-p-vertical_xxx-small"><strong>{item.label}:</strong> {item.value}</li>
+          </template>
+        </ul>
+      </template>
+    </div>
+  </lightning-modal-body>
+  <lightning-modal-footer>
+    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+      <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+      <div>
+        <template lwc:if={isFirst}></template>
+        <template lwc:else>
+          <lightning-button label="Back" onclick={handleBack} class="slds-m-right_x-small"></lightning-button>
+        </template>
+        <lightning-button variant="brand" label={nextLabel} onclick={handleNext}></lightning-button>
+      </div>
+    </div>
+  </lightning-modal-footer>
+</template>

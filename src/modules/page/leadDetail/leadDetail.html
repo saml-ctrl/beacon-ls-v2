@@ -1,0 +1,64 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <template lwc:if={hasLead}>
+      <ui-page-header variant="record-home" icon-name="standard:lead" object-label="Lead (KOL)" title={leadName} fields={highlightFields}>
+        <div slot="actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <lightning-button-group>
+                <lightning-button label="Convert" variant="brand" icon-name="utility:change_owner" onclick={handleConvert} disabled={convertDisabled}></lightning-button>
+                <lightning-button label="Enrich with Clay" variant="neutral" icon-name="utility:magicwand" onclick={handleEnrich}></lightning-button>
+                <lightning-button label="Edit" variant="neutral"></lightning-button>
+              </lightning-button-group>
+            </div>
+          </div>
+        </div>
+      </ui-page-header>
+
+      <lightning-tabset variant="scoped" active-tab-value={activeTab} class="slds-m-top_small">
+        <lightning-tab label="Details" value="details" onactive={handleTabActive}>
+          <ui-detail-section title="KOL Information" fields={kolInfoFields}></ui-detail-section>
+          <ui-detail-section title="Contact Details" fields={contactFields}></ui-detail-section>
+          <ui-annotation-chip
+            type="best-practice"
+            heading="Clay-enriched fields sit in Contact Details with an Enriched flag"
+            detail="Reps trust provenance because enrichment lands in a labeled section with an Enriched flag and Enrichment Date.">
+          </ui-annotation-chip>
+          <ui-annotation-chip
+            type="integration"
+            heading="Clay enrichment"
+            detail="on-demand and one-time-on-assignment enrichment only. Customer responsible for licensing and API tokens.">
+          </ui-annotation-chip>
+          <ui-detail-section title="Status" fields={statusFields}></ui-detail-section>
+        </lightning-tab>
+
+        <lightning-tab label="Engagement" value="engagement" onactive={handleTabActive}>
+          <ui-annotation-chip
+            type="best-practice"
+            heading="Engagement tab puts MCAE history one click away before the rep dials"
+            detail="MCAE Engagement History and Campaign History live together so the rep sees intent signals before the first call.">
+          </ui-annotation-chip>
+          <div class="slds-m-bottom_medium">
+            <ui-related-list title="Engagement History (MCAE)" icon-name="standard:email" columns={engagementColumns} records={engagementRecords} empty-text="No engagement history yet."></ui-related-list>
+          </div>
+          <ui-related-list title="Campaign History" icon-name="standard:campaign" columns={campaignColumns} records={campaignRecords} empty-text="No campaign membership yet."></ui-related-list>
+        </lightning-tab>
+
+        <lightning-tab label="Activity" value="activity" onactive={handleTabActive}>
+          <lightning-card title="Activity Timeline" icon-name="standard:task">
+            <div class="slds-p-horizontal_medium">
+              <ui-activity-timeline items={activityItems}></ui-activity-timeline>
+            </div>
+          </lightning-card>
+        </lightning-tab>
+      </lightning-tabset>
+    </template>
+
+    <template lwc:else>
+      <div class="slds-illustration slds-p-around_large slds-text-align_center">
+        <p class="slds-text-heading_medium">Lead not found</p>
+        <lightning-button class="slds-m-top_small" label="Back to Leads" variant="brand" onclick={handleBack}></lightning-button>
+      </div>
+    </template>
+  </div>
+</template>

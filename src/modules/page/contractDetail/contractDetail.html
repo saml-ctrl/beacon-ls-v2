@@ -1,0 +1,75 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <template lwc:if={hasContract}>
+      <ui-page-header variant="record-home" icon-name="standard:contract" object-label="Sales Contract" title={contractName} fields={highlightFields}>
+        <div slot="actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <lightning-button-group>
+                <lightning-button label="Send for Signature" variant="brand" icon-name="utility:signature" onclick={handleSend} disabled={canSimulate}></lightning-button>
+                <lightning-button label="Edit" variant="neutral"></lightning-button>
+              </lightning-button-group>
+            </div>
+          </div>
+        </div>
+      </ui-page-header>
+
+      <template lwc:if={canSimulate}>
+        <div class="c-demo-chrome slds-box slds-m-vertical_small">
+          <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-wrap">
+            <div>
+              <p class="c-demo-chrome__label">Presenter control — not Salesforce UI</p>
+              <p class="slds-text-body_small">{simulateHint}</p>
+            </div>
+            <lightning-button label="Simulate Sponsor Action" variant="neutral" icon-name="utility:apex_plugin" onclick={handleSimulate}></lightning-button>
+          </div>
+        </div>
+      </template>
+
+      <lightning-tabset variant="scoped" active-tab-value={activeTab} class="slds-m-top_small">
+        <lightning-tab label="Details" value="details" onactive={handleTabActive}>
+          <ui-detail-section title="Contract Information" fields={contractInfoFields}></ui-detail-section>
+          <ui-annotation-chip
+            type="best-practice"
+            heading="Status driven by the standard Adobe Acrobat Sign managed package callback"
+            detail="No custom Adobe configuration — the Adobe Acrobat Sign managed package's callback moves the status Draft → Sent → Viewed → Signed.">
+          </ui-annotation-chip>
+          <ui-annotation-chip
+            type="integration"
+            heading="Adobe Acrobat Sign"
+            detail="Customer responsible for licensing and API tokens.">
+          </ui-annotation-chip>
+        </lightning-tab>
+
+        <lightning-tab label="Documents & History" value="documents" onactive={handleTabActive}>
+          <ui-annotation-chip
+            type="best-practice"
+            heading="Executed PDF auto-filed against the contract"
+            detail="On Signed, the executed PDF appears in Files. Redlining stays offline before upload.">
+          </ui-annotation-chip>
+          <div class="slds-m-bottom_medium">
+            <ui-related-list title="Files" icon-name="standard:file" columns={fileColumns} records={fileRecords} empty-text="No documents yet. The executed PDF is filed here on Signed."></ui-related-list>
+          </div>
+          <ui-annotation-chip
+            type="open-decision"
+            heading="Part 11 e-signature / audit: Phase 1 vs. informational only"
+            detail="Open Decision — decide in discovery whether the Part 11 e-signature/audit trail is in Phase 1 scope or informational only. Contract Field History stands in for the audit trail below.">
+          </ui-annotation-chip>
+          <ui-annotation-chip
+            type="open-decision"
+            heading="Document storage system of record: SharePoint vs. Salesforce Files"
+            detail="Open Decision — confirm whether SharePoint or Salesforce Files is the document system of record.">
+          </ui-annotation-chip>
+          <ui-related-list title="Contract Field History" icon-name="standard:history" columns={historyColumns} records={historyRecords} empty-text="No field history yet."></ui-related-list>
+        </lightning-tab>
+      </lightning-tabset>
+    </template>
+
+    <template lwc:else>
+      <div class="slds-illustration slds-p-around_large slds-text-align_center">
+        <p class="slds-text-heading_medium">Sales Contract not found</p>
+        <lightning-button class="slds-m-top_small" label="Back to Sales Contracts" variant="brand" onclick={handleBack}></lightning-button>
+      </div>
+    </template>
+  </div>
+</template>

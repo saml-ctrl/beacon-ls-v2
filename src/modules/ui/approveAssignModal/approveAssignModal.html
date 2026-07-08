@@ -1,0 +1,50 @@
+<template>
+  <lightning-modal-header label="Approve & Assign Research Study"></lightning-modal-header>
+  <lightning-modal-body>
+    <ui-flow-progress steps={steps} current={step}></ui-flow-progress>
+
+    <div class="slds-p-around_medium">
+      <template lwc:if={isStep0}>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+          Review the qualified study before assigning a BD owner.
+        </p>
+        <ui-detail-section title="Study Summary" fields={summaryFields}></ui-detail-section>
+      </template>
+
+      <template lwc:if={isStep1}>
+        <lightning-combobox
+          label="Assign BD Rep"
+          value={bdRep}
+          options={repOptions}
+          onchange={handleRep}
+          required
+          class="slds-m-bottom_small">
+        </lightning-combobox>
+        <lightning-combobox
+          label="Approval Status"
+          value={approvalStatus}
+          options={statusOptions}
+          onchange={handleStatus}>
+        </lightning-combobox>
+      </template>
+
+      <template lwc:if={isStep2}>
+        <div class="slds-box slds-theme_shade">
+          <p>{confirmText}</p>
+        </div>
+      </template>
+    </div>
+  </lightning-modal-body>
+  <lightning-modal-footer>
+    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+      <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+      <div>
+        <template lwc:if={isFirst}></template>
+        <template lwc:else>
+          <lightning-button label="Back" onclick={handleBack} class="slds-m-right_x-small"></lightning-button>
+        </template>
+        <lightning-button variant="brand" label={nextLabel} onclick={handleNext}></lightning-button>
+      </div>
+    </div>
+  </lightning-modal-footer>
+</template>

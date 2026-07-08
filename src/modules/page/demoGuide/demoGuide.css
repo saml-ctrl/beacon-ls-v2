@@ -1,0 +1,111 @@
+/* Stakeholder journey swim-lane map (presenter chrome) */
+.c-journey-scroll,
+.c-process-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+.c-journey {
+  display: grid;
+  grid-template-columns: 170px repeat(8, minmax(150px, 1fr));
+  gap: 2px;
+  min-width: 1200px;
+}
+.c-journey__corner,
+.c-journey__phase,
+.c-journey__lane {
+  background: #032d60;
+  color: #fff;
+  padding: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.c-journey__phase {
+  background: #0b5cab;
+  justify-content: center;
+  text-align: center;
+}
+.c-journey__lane {
+  background: #16325c;
+}
+.c-journey__cell {
+  background: #f7f9fb;
+  padding: 0.5rem;
+  font-size: 0.72rem;
+  min-height: 66px;
+  border: 1px solid #e5e5e5;
+}
+.c-journey__cell_active {
+  background: #eef6ff;
+}
+.c-journey__text {
+  display: block;
+  color: #16325c;
+}
+.c-journey__bells {
+  margin-bottom: 0.25rem;
+}
+.c-journey__bell {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: #ea001e;
+  color: #fff;
+  border-radius: 0.75rem;
+  padding: 0.05rem 0.45rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-right: 0.2rem;
+}
+
+/* End-to-end process flow (clickable, deep-linking) */
+.c-process {
+  display: flex;
+  align-items: center;
+  min-width: 1040px;
+}
+.c-process__item {
+  display: flex;
+  align-items: center;
+}
+.c-process__node {
+  display: flex;
+  flex-direction: column;
+  width: 152px;
+  min-height: 92px;
+  padding: 0.5rem;
+  border: 1px solid #78b0ff;
+  border-radius: 0.35rem;
+  background: #eaf3ff;
+  color: #032d60;
+  text-decoration: none;
+}
+.c-process__node:hover {
+  background: #d9ebff;
+}
+.c-process__num {
+  font-weight: 700;
+  font-size: 0.7rem;
+  background: #0b5cab;
+  color: #fff;
+  border-radius: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+}
+.c-process__label {
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+.c-process__sub {
+  font-size: 0.66rem;
+  color: #54698d;
+  margin-top: 0.15rem;
+}
+.c-process__arrow {
+  margin: 0 0.15rem;
+}

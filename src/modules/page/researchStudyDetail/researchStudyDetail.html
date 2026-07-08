@@ -1,0 +1,93 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <template lwc:if={hasStudy}>
+      <ui-page-header
+        variant="record-home"
+        icon-name="standard:instore_actions"
+        object-label="Research Study"
+        title={studyName}
+        fields={highlightFields}>
+        <div slot="actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <lightning-button-group>
+                <lightning-button label="Approve & Assign" variant="brand" icon-name="utility:approval" onclick={handleApproveAssign}></lightning-button>
+                <lightning-button label="Edit" variant="neutral"></lightning-button>
+              </lightning-button-group>
+            </div>
+          </div>
+        </div>
+      </ui-page-header>
+
+      <lightning-tabset variant="scoped" active-tab-value={activeTab} class="slds-m-top_small">
+        <lightning-tab label="Details" value="details" onactive={handleTabActive}>
+          <ui-detail-section title="Study Information" fields={studyInfoFields}></ui-detail-section>
+          <ui-annotation-chip
+            type="open-decision"
+            heading="Research Study: standard LSC object vs. custom (undecided)"
+            detail="Open Decision — confirm in discovery whether Research Study is the standard Life Sciences Cloud object or a custom object.">
+          </ui-annotation-chip>
+          <ui-detail-section title="Sourcing & Qualification" fields={sourcingFields}></ui-detail-section>
+          <ui-annotation-chip
+            type="best-practice"
+            heading="ICP fields grouped in their own section"
+            detail="Qualification data (ICP flag, ICP score, approval status, assigned rep) stays separate from registry data so reps read triage signals at a glance.">
+          </ui-annotation-chip>
+          <ui-detail-section title="System Information" fields={systemFields}></ui-detail-section>
+        </lightning-tab>
+
+        <lightning-tab label="Sites & Locations" value="sites" onactive={handleTabActive}>
+          <ui-related-list
+            title="Research Study Locations"
+            icon-name="standard:location"
+            columns={locationColumns}
+            records={locationRecords}
+            empty-text="No sites linked to this study yet.">
+          </ui-related-list>
+        </lightning-tab>
+
+        <lightning-tab label="KOLs" value="kols" onactive={handleTabActive}>
+          <ui-annotation-chip
+            type="best-practice"
+            heading="Filtered KOL lists split open vs converted"
+            detail="Two filtered related lists off the same Lead object keep triage (open) and follow-up (converted) from ever mixing.">
+          </ui-annotation-chip>
+          <div class="slds-m-bottom_medium">
+            <ui-related-list
+              title="Open KOL Leads"
+              icon-name="standard:lead"
+              columns={openLeadColumns}
+              records={openLeadRecords}
+              view-all-path={kolsViewAllPath}
+              empty-text="No open KOL leads.">
+            </ui-related-list>
+          </div>
+          <ui-related-list
+            title="Converted KOLs"
+            icon-name="standard:contact"
+            columns={convertedLeadColumns}
+            records={convertedLeadRecords}
+            empty-text="No KOL leads converted yet.">
+          </ui-related-list>
+        </lightning-tab>
+
+        <lightning-tab label="Opportunities" value="opportunities" onactive={handleTabActive}>
+          <ui-related-list
+            title="Opportunities"
+            icon-name="standard:opportunity"
+            columns={opportunityColumns}
+            records={opportunityRecords}
+            empty-text="No opportunities linked to this study yet.">
+          </ui-related-list>
+        </lightning-tab>
+      </lightning-tabset>
+    </template>
+
+    <template lwc:else>
+      <div class="slds-illustration slds-p-around_large slds-text-align_center">
+        <p class="slds-text-heading_medium">Research Study not found</p>
+        <lightning-button class="slds-m-top_small" label="Back to Research Studies" variant="brand" onclick={handleBack}></lightning-button>
+      </div>
+    </template>
+  </div>
+</template>

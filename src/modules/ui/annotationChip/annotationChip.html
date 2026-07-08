@@ -1,0 +1,14 @@
+<template>
+  <template lwc:if={show}>
+    <div class="c-chip-wrap slds-m-vertical_xx-small">
+      <button type="button" class={chipClass} onclick={toggle} aria-expanded={ariaExpanded} title={typeLabel}>
+        <lightning-icon icon-name={iconName} size="xx-small" class="c-chip__icon slds-m-right_xx-small"></lightning-icon>
+        <span class="c-chip__type">{typeLabel}</span>
+        <span class="c-chip__heading slds-m-left_xx-small">{heading}</span>
+      </button>
+      <template lwc:if={expanded}>
+        <div class={detailClass}>{detail}</div>
+      </template>
+    </div>
+  </template>
+</template>

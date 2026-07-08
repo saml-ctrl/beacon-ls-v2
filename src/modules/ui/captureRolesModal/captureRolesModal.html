@@ -1,0 +1,43 @@
+<template>
+  <lightning-modal-header label="Capture Key Project Roles"></lightning-modal-header>
+  <lightning-modal-body>
+    <ui-flow-progress steps={steps} current={step}></ui-flow-progress>
+    <div class="slds-p-around_medium">
+      <template lwc:if={isStep0}>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+          The Onboarding Form auto-sends on Closed Won. Confirm the recipient (defaults to the project lead). If left blank, Finish creates an “Assign onboarding recipient” task instead.
+        </p>
+        <lightning-input label="Onboarding Form Recipient" value={onboardingFormRecipient} onchange={handleRecipient}></lightning-input>
+      </template>
+
+      <template lwc:if={isStep1}>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">All four roles are required to complete kickoff.</p>
+        <lightning-input label="Billing Contact" value={billingContact} onchange={handleBilling} required class="slds-m-bottom_small"></lightning-input>
+        <lightning-input label="Product Owner" value={productOwner} onchange={handleProductOwner} required class="slds-m-bottom_small"></lightning-input>
+        <lightning-input label="Executive Sponsor" value={executiveSponsor} onchange={handleExecSponsor} required class="slds-m-bottom_small"></lightning-input>
+        <lightning-input label="End Users" value={endUsers} onchange={handleEndUsers} required></lightning-input>
+        <template lwc:if={rolesError}>
+          <p class="slds-text-color_error slds-text-body_small slds-m-top_xx-small">All four roles are required to complete onboarding kickoff.</p>
+        </template>
+      </template>
+
+      <template lwc:if={isStep2}>
+        <lightning-input label="Exhibit Letter" value={exhibitLetter} onchange={handleExhibit} class="slds-m-bottom_small"></lightning-input>
+        <lightning-input label="Project Name" value={projectName} onchange={handleProject} class="slds-m-bottom_medium"></lightning-input>
+        <ui-detail-section title="Cost Info (populated at Closed Won)" fields={costFields}></ui-detail-section>
+      </template>
+    </div>
+  </lightning-modal-body>
+  <lightning-modal-footer>
+    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+      <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+      <div>
+        <template lwc:if={isFirst}></template>
+        <template lwc:else>
+          <lightning-button label="Back" onclick={handleBack} class="slds-m-right_x-small"></lightning-button>
+        </template>
+        <lightning-button variant="brand" label={nextLabel} onclick={handleNext}></lightning-button>
+      </div>
+    </div>
+  </lightning-modal-footer>
+</template>

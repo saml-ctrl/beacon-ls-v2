@@ -1,0 +1,32 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <ui-page-header
+      variant="object-home"
+      icon-name="standard:lead"
+      object-label="Leads"
+      title={currentViewLabel}
+      meta-text={metaText}
+      onsearch={handleSearch}>
+      <ui-list-view-picker slot="switcher" views={views} current-view={view} onviewchange={handleViewChange}></ui-list-view-picker>
+      <div slot="actions">
+        <div class="slds-page-header__controls">
+          <div class="slds-page-header__control">
+            <lightning-button-group>
+              <lightning-button label="New" variant="neutral"></lightning-button>
+              <lightning-button label="Import" variant="neutral"></lightning-button>
+            </lightning-button-group>
+          </div>
+        </div>
+      </div>
+    </ui-page-header>
+
+    <ui-annotation-chip
+      type="integration"
+      heading="Clay + MCAE at KOL engagement"
+      detail="on-demand and one-time-on-assignment enrichment only (Clay). MCAE Engagement History surfaces on the record. Customer responsible for licensing and API tokens.">
+    </ui-annotation-chip>
+
+    <lightning-datatable key-field="id" data={filtered} columns={columns} onrowaction={handleRowAction} hide-checkbox-column show-row-number-column>
+    </lightning-datatable>
+  </div>
+</template>

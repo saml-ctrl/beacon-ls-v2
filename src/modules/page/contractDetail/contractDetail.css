@@ -1,0 +1,12 @@
+.c-demo-chrome {
+  border: 1px dashed #8a7ee6;
+  background: repeating-linear-gradient(45deg, #faf9ff, #faf9ff 10px, #f2effc 10px, #f2effc 20px);
+}
+.c-demo-chrome__label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  color: #5b4bd6;
+  margin-bottom: 0.15rem;
+}

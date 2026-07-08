@@ -1,0 +1,78 @@
+<template>
+  <div class="slds-p-around_medium">
+    <lightning-card title="Beacon Biosignals — Life Sciences Sales (Future-State Wireframe)" icon-name="standard:knowledge">
+      <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+        <p class="slds-m-bottom_small">
+          A clickable wireframe of the future-state Salesforce Life Sciences Cloud implementation for
+          Beacon Biosignals — EEG-based clinical trial services sold to biopharma sponsors.
+          <strong>This is not a real Salesforce org.</strong> Its purpose is
+          <strong>page layout and data model discovery</strong>: which fields display where, how tabbed
+          record layouts bundle related lists by job-to-be-done, how list views surface the right records,
+          and how cross-functional handoffs notify the next persona.
+        </p>
+        <ul class="slds-list_dotted">
+          <li>Step through the story with the docked <strong>Journey bar</strong> at the bottom (Back / Next / Reset Demo).</li>
+          <li>The <strong>notification bell</strong> (global header) fills as each of the six cross-functional handoffs fires.</li>
+          <li><strong>Discovery Mode</strong> (global header, default ON) shows Best Practice, Integration, and Open Decision annotations; switch OFF for a clean org.</li>
+        </ul>
+      </div>
+    </lightning-card>
+
+    <div class="slds-m-top_medium">
+      <lightning-card title="Stakeholder Journey Map" icon-name="standard:people">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+          <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+            Four persona lanes across the lifecycle. A <lightning-icon icon-name="utility:notification" size="xx-small"></lightning-icon>
+            marks each cross-functional handoff and the notification number that fires there.
+          </p>
+          <div class="c-journey-scroll">
+            <div class="c-journey">
+              <template for:each={gridCells} for:item="cell">
+                <div key={cell.key} class={cell.cellClass}>
+                  <template lwc:if={cell.showLabel}>{cell.label}</template>
+                  <template lwc:if={cell.showText}>
+                    <template lwc:if={cell.hasBells}>
+                      <div class="c-journey__bells">
+                        <template for:each={cell.bells} for:item="b">
+                          <span key={b.key} class="c-journey__bell" title="Cross-functional handoff notification">
+                            <lightning-icon icon-name="utility:notification" size="xx-small" variant="inverse"></lightning-icon>
+                            {b.label}
+                          </span>
+                        </template>
+                      </div>
+                    </template>
+                    <span class="c-journey__text">{cell.text}</span>
+                  </template>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </lightning-card>
+    </div>
+
+    <div class="slds-m-top_medium">
+      <lightning-card title="End-to-End Process" icon-name="standard:flow">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+          <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+            Each node deep-links into the app. Integration touchpoints are noted along the flow.
+          </p>
+          <div class="c-process-scroll">
+            <div class="c-process">
+              <template for:each={processNodes} for:item="node">
+                <div key={node.key} class="c-process__item">
+                  <a href="#" class="c-process__node" data-path={node.path} data-record-id={node.recordId} data-tab={node.tab} onclick={handleNav}>
+                    <span class="c-process__num">{node.n}</span>
+                    <span class="c-process__label">{node.label}</span>
+                    <span class="c-process__sub">{node.sublabel}</span>
+                  </a>
+                  <lightning-icon icon-name="utility:chevronright" size="x-small" class="c-process__arrow"></lightning-icon>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </lightning-card>
+    </div>
+  </div>
+</template>

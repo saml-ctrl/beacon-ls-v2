@@ -1,0 +1,35 @@
+<template>
+  <lightning-modal-header label="Send for Signature"></lightning-modal-header>
+  <lightning-modal-body>
+    <ui-flow-progress steps={steps} current={step}></ui-flow-progress>
+    <div class="slds-p-around_medium">
+      <template lwc:if={isStep0}>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">Select the document to route through Adobe Acrobat Sign.</p>
+        <lightning-combobox label="Document" value={document} options={docOptions} onchange={handleDoc}></lightning-combobox>
+      </template>
+      <template lwc:if={isStep1}>
+        <lightning-input label="Recipient (Signer)" value={recipient} onchange={handleRecipient} class="slds-m-bottom_small"></lightning-input>
+        <div class="slds-box slds-theme_shade slds-text-body_small">
+          <strong>Signature tag placement:</strong> Signature + Date on the SOW signature block; initials on Exhibit A pricing page. Standard Adobe Sign tags — no custom configuration.
+        </div>
+      </template>
+      <template lwc:if={isStep2}>
+        <div class="slds-box slds-theme_shade">
+          <p>Send <strong>{contract.name}</strong> to {recipient} for signature. Status will move to <strong>Sent</strong>.</p>
+        </div>
+      </template>
+    </div>
+  </lightning-modal-body>
+  <lightning-modal-footer>
+    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+      <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+      <div>
+        <template lwc:if={isFirst}></template>
+        <template lwc:else>
+          <lightning-button label="Back" onclick={handleBack} class="slds-m-right_x-small"></lightning-button>
+        </template>
+        <lightning-button variant="brand" label={nextLabel} onclick={handleNext}></lightning-button>
+      </div>
+    </div>
+  </lightning-modal-footer>
+</template>

@@ -1,0 +1,51 @@
+<template>
+  <lightning-card icon-name={iconName} title={cardTitle}>
+    <div slot="actions">
+      <slot name="actions"></slot>
+    </div>
+
+    <template lwc:if={hasRows}>
+      <div class="slds-scrollable_x">
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+          <thead>
+            <tr class="slds-line-height_reset">
+              <template for:each={headerCells} for:item="col">
+                <th key={col.key} scope="col">
+                  <span class="slds-truncate" title={col.label}>{col.label}</span>
+                </th>
+              </template>
+            </tr>
+          </thead>
+          <tbody>
+            <template for:each={computedRows} for:item="row">
+              <tr key={row.key} class="slds-hint-parent">
+                <template for:each={row.cells} for:item="cell">
+                  <td key={cell.key} data-label={cell.value}>
+                    <template lwc:if={cell.isLink}>
+                      <a href={cell.href} data-path={cell.path} onclick={handleNav} class="slds-truncate" title={cell.value}>{cell.value}</a>
+                    </template>
+                    <template lwc:if={cell.isText}>
+                      <span class="slds-truncate" title={cell.value}>{cell.value}</span>
+                    </template>
+                  </td>
+                </template>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </template>
+
+    <template lwc:if={hasRows}>
+    </template>
+    <template lwc:else>
+      <div class="slds-p-around_medium slds-text-color_weak slds-text-body_small">{emptyText}</div>
+    </template>
+
+    <template lwc:if={showViewAll}>
+      <div slot="footer" class="slds-text-align_center">
+        <a href="#" data-path={viewAllPath} onclick={handleViewAll}>{viewAllLabel}</a>
+      </div>
+    </template>
+  </lightning-card>
+</template>

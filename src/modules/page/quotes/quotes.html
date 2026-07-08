@@ -1,0 +1,29 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <ui-page-header
+      variant="object-home"
+      icon-name="standard:quotes"
+      object-label="Quotes"
+      title={currentViewLabel}
+      meta-text={metaText}
+      onsearch={handleSearch}>
+      <ui-list-view-picker slot="switcher" views={views} current-view={view} onviewchange={handleViewChange}></ui-list-view-picker>
+      <div slot="actions">
+        <div class="slds-page-header__controls">
+          <div class="slds-page-header__control">
+            <lightning-button label="New" variant="neutral"></lightning-button>
+          </div>
+        </div>
+      </div>
+    </ui-page-header>
+
+    <ui-annotation-chip
+      type="best-practice"
+      heading="Quote records track status & totals in CRM; the working sheet lives in SharePoint"
+      detail="No CPQ or pricing rules in Phase 1 — the Quote object records status and totals while the working quote sheet stays external.">
+    </ui-annotation-chip>
+
+    <lightning-datatable key-field="id" data={filtered} columns={columns} onrowaction={handleRowAction} hide-checkbox-column show-row-number-column>
+    </lightning-datatable>
+  </div>
+</template>

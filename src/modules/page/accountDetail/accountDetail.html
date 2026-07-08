@@ -1,0 +1,78 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <template lwc:if={hasAccount}>
+      <ui-page-header variant="record-home" icon-name="standard:account" object-label={objectLabel} title={accountName} fields={highlightFields}>
+        <div slot="actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <lightning-button-group>
+                <lightning-button label="Edit" variant="neutral"></lightning-button>
+                <lightning-button label="New Opportunity" variant="neutral"></lightning-button>
+              </lightning-button-group>
+            </div>
+          </div>
+        </div>
+      </ui-page-header>
+
+      <ui-annotation-chip
+        type="best-practice"
+        heading="One Account object, two record types with distinct tab sets"
+        detail="Sponsors and sites share dedupe / MDM but do different jobs — each record type gets its own page layout and tab set.">
+      </ui-annotation-chip>
+
+      <!-- Organization (Sponsor) layout -->
+      <template lwc:if={isOrganization}>
+        <lightning-tabset variant="scoped" active-tab-value={activeTab} class="slds-m-top_small">
+          <lightning-tab label="Details" value="details" onactive={handleTabActive}>
+            <ui-detail-section title="Account Information" fields={orgInfoFields}></ui-detail-section>
+            <ui-detail-section title="Company Profile" fields={companyProfileFields}></ui-detail-section>
+          </lightning-tab>
+          <lightning-tab label="Opportunities" value="opportunities" onactive={handleTabActive}>
+            <div class="slds-m-bottom_medium">
+              <ui-related-list title="Open Opportunities" icon-name="standard:opportunity" columns={openOppColumns} records={openOppRecords} view-all-path="/opportunities" empty-text="No open opportunities."></ui-related-list>
+            </div>
+            <ui-related-list title="Closed Won" icon-name="standard:opportunity" columns={wonOppColumns} records={wonOppRecords} empty-text="No closed-won opportunities."></ui-related-list>
+          </lightning-tab>
+          <lightning-tab label="Research Studies" value="studies" onactive={handleTabActive}>
+            <ui-related-list title="Research Studies" icon-name="standard:instore_actions" columns={studyColumns} records={studyRecords} empty-text="No studies sponsored."></ui-related-list>
+          </lightning-tab>
+          <lightning-tab label="People" value="people" onactive={handleTabActive}>
+            <div class="slds-m-bottom_medium">
+              <ui-related-list title="Contacts" icon-name="standard:contact" columns={contactColumns} records={contactRecords} empty-text="No contacts."></ui-related-list>
+            </div>
+            <ui-related-list title="Account Contact Relationships" icon-name="standard:account" columns={acrColumns} records={acrRecords} empty-text="No relationships."></ui-related-list>
+          </lightning-tab>
+        </lightning-tabset>
+      </template>
+
+      <!-- Clinical Site layout -->
+      <template lwc:if={isClinicalSite}>
+        <lightning-tabset variant="scoped" active-tab-value={activeTab} class="slds-m-top_small">
+          <lightning-tab label="Details" value="details" onactive={handleTabActive}>
+            <ui-detail-section title="Site Information" fields={siteInfoFields}></ui-detail-section>
+            <ui-detail-section title="Study Participation" fields={siteParticipationFields}></ui-detail-section>
+          </lightning-tab>
+          <lightning-tab label="Studies" value="studies" onactive={handleTabActive}>
+            <ui-related-list title="Research Study Locations" icon-name="standard:location" columns={siteStudyColumns} records={siteStudyRecords} empty-text="No studies at this site."></ui-related-list>
+          </lightning-tab>
+          <lightning-tab label="Opportunity Involvement" value="opportunities" onactive={handleTabActive}>
+            <ui-related-list title="Opportunity Sites" icon-name="standard:opportunity" columns={oppSiteColumns} records={oppSiteRecords} empty-text="Not engaged on any opportunity."></ui-related-list>
+          </lightning-tab>
+          <lightning-tab label="People" value="people" onactive={handleTabActive}>
+            <ui-related-list title="Account Contact Relationships" icon-name="standard:contact" columns={acrPeopleColumns} records={acrPeopleRecords} empty-text="No affiliated contacts."></ui-related-list>
+          </lightning-tab>
+          <lightning-tab label="Devices" value="devices" onactive={handleTabActive}>
+            <ui-related-list title="Deployed Wavebands" icon-name="standard:asset_object" columns={deviceColumns} records={deviceRecords} empty-text="No devices deployed at this site."></ui-related-list>
+          </lightning-tab>
+        </lightning-tabset>
+      </template>
+    </template>
+
+    <template lwc:else>
+      <div class="slds-illustration slds-p-around_large slds-text-align_center">
+        <p class="slds-text-heading_medium">Account not found</p>
+        <lightning-button class="slds-m-top_small" label="Back to Accounts" variant="brand" onclick={handleBack}></lightning-button>
+      </div>
+    </template>
+  </div>
+</template>

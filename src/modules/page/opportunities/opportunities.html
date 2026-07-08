@@ -1,0 +1,23 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <ui-page-header
+      variant="object-home"
+      icon-name="standard:opportunity"
+      object-label="Opportunities"
+      title={currentViewLabel}
+      meta-text={metaText}
+      onsearch={handleSearch}>
+      <ui-list-view-picker slot="switcher" views={views} current-view={view} onviewchange={handleViewChange}></ui-list-view-picker>
+      <div slot="actions">
+        <div class="slds-page-header__controls">
+          <div class="slds-page-header__control">
+            <lightning-button label="New" variant="neutral"></lightning-button>
+          </div>
+        </div>
+      </div>
+    </ui-page-header>
+
+    <lightning-datatable key-field="id" data={filtered} columns={columns} onrowaction={handleRowAction} hide-checkbox-column show-row-number-column>
+    </lightning-datatable>
+  </div>
+</template>

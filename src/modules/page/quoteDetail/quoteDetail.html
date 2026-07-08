@@ -1,0 +1,39 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <template lwc:if={hasQuote}>
+      <ui-page-header variant="record-home" icon-name="standard:quotes" object-label="Quote" title={quoteName} fields={highlightFields}>
+        <div slot="actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <lightning-button-group>
+                <lightning-button label="Edit" variant="neutral"></lightning-button>
+                <lightning-button label="Create PDF" variant="neutral"></lightning-button>
+              </lightning-button-group>
+            </div>
+          </div>
+        </div>
+      </ui-page-header>
+
+      <lightning-tabset variant="scoped" active-tab-value={activeTab} class="slds-m-top_small">
+        <lightning-tab label="Details" value="details" onactive={handleTabActive}>
+          <ui-detail-section title="Quote Information" fields={quoteInfoFields}></ui-detail-section>
+          <ui-annotation-chip
+            type="best-practice"
+            heading="Status & totals in CRM; the working quote sheet lives in SharePoint"
+            detail="No CPQ or pricing rules in Phase 1 — the Quote tracks status and totals while the working sheet stays external.">
+          </ui-annotation-chip>
+          <ui-detail-section title="Totals" fields={totalsFields}></ui-detail-section>
+        </lightning-tab>
+        <lightning-tab label="Line Items" value="lines" onactive={handleTabActive}>
+          <ui-related-list title="Quote Line Items" icon-name="standard:product" columns={lineColumns} records={lineRecords} empty-text="No line items."></ui-related-list>
+        </lightning-tab>
+      </lightning-tabset>
+    </template>
+    <template lwc:else>
+      <div class="slds-illustration slds-p-around_large slds-text-align_center">
+        <p class="slds-text-heading_medium">Quote not found</p>
+        <lightning-button class="slds-m-top_small" label="Back to Quotes" variant="brand" onclick={handleBack}></lightning-button>
+      </div>
+    </template>
+  </div>
+</template>

@@ -1,0 +1,35 @@
+.c-presenter {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8000;
+  background: #032d60;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+}
+.c-presenter__badge {
+  display: inline-block;
+  background: #0b5cab;
+  color: #fff;
+  border-radius: 1rem;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.c-presenter__title {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 0.85rem;
+  min-width: 12rem;
+}
+.c-presenter__actions {
+  display: flex;
+  align-items: center;
+}
+.c-presenter__reset {
+  --slds-c-button-text-color: #ffb3b3;
+}

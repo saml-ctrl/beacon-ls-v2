@@ -1,0 +1,50 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <template lwc:if={hasContact}>
+      <ui-page-header variant="record-home" icon-name="standard:contact" object-label="Contact (KOL)" title={contactName} fields={highlightFields}>
+        <div slot="actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <lightning-button-group>
+                <lightning-button label="Edit" variant="neutral"></lightning-button>
+                <lightning-button label="New Opportunity" variant="neutral"></lightning-button>
+              </lightning-button-group>
+            </div>
+          </div>
+        </div>
+      </ui-page-header>
+
+      <lightning-tabset variant="scoped" active-tab-value={activeTab} class="slds-m-top_small">
+        <lightning-tab label="Details" value="details" onactive={handleTabActive}>
+          <ui-detail-section title="Contact Information" fields={contactInfoFields}></ui-detail-section>
+          <ui-detail-section title="Professional Details" fields={professionalFields}></ui-detail-section>
+          <ui-detail-section title="System Information" fields={systemFields}></ui-detail-section>
+        </lightning-tab>
+
+        <lightning-tab label="Affiliations" value="affiliations" onactive={handleTabActive}>
+          <ui-annotation-chip
+            type="best-practice"
+            heading="Account Contact Relationships, not a single Account lookup"
+            detail="PIs are affiliated with multiple institutions, so affiliations use Account Contact Relationships instead of one Account lookup.">
+          </ui-annotation-chip>
+          <ui-related-list title="Account Contact Relationships" icon-name="standard:account" columns={acrColumns} records={acrRecords} empty-text="No affiliations recorded."></ui-related-list>
+        </lightning-tab>
+
+        <lightning-tab label="Opportunities" value="opportunities" onactive={handleTabActive}>
+          <ui-related-list title="Opportunity Contact Roles" icon-name="standard:opportunity" columns={oppRoleColumns} records={oppRoleRecords} empty-text="Not on any opportunity yet."></ui-related-list>
+        </lightning-tab>
+
+        <lightning-tab label="Engagement" value="engagement" onactive={handleTabActive}>
+          <ui-related-list title="Engagement History (MCAE)" icon-name="standard:email" columns={engagementColumns} records={engagementRecords} empty-text="No engagement history yet."></ui-related-list>
+        </lightning-tab>
+      </lightning-tabset>
+    </template>
+
+    <template lwc:else>
+      <div class="slds-illustration slds-p-around_large slds-text-align_center">
+        <p class="slds-text-heading_medium">Contact not found</p>
+        <lightning-button class="slds-m-top_small" label="Back to Contacts" variant="brand" onclick={handleBack}></lightning-button>
+      </div>
+    </template>
+  </div>
+</template>

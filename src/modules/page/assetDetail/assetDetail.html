@@ -1,0 +1,27 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <template lwc:if={hasAsset}>
+      <ui-page-header variant="record-home" icon-name="standard:asset_object" object-label="Asset" title={assetName} fields={highlightFields}>
+        <div slot="actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <lightning-button label="Edit" variant="neutral"></lightning-button>
+            </div>
+          </div>
+        </div>
+      </ui-page-header>
+
+      <lightning-tabset variant="scoped" class="slds-m-top_small">
+        <lightning-tab label="Details" value="details">
+          <ui-detail-section title="Asset Information" fields={assetInfoFields}></ui-detail-section>
+        </lightning-tab>
+      </lightning-tabset>
+    </template>
+    <template lwc:else>
+      <div class="slds-illustration slds-p-around_large slds-text-align_center">
+        <p class="slds-text-heading_medium">Asset not found</p>
+        <lightning-button class="slds-m-top_small" label="Back to Assets" variant="brand" onclick={handleBack}></lightning-button>
+      </div>
+    </template>
+  </div>
+</template>

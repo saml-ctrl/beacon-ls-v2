@@ -1,0 +1,18 @@
+<template>
+  <lightning-modal-header label="Enrich with Clay"></lightning-modal-header>
+  <lightning-modal-body>
+    <div class="slds-p-around_medium">
+      <p class="slds-m-bottom_small">
+        Run on-demand Clay enrichment for <strong>{lead.name}</strong>? This populates Email, Phone, and LinkedIn on the
+        Lead and sets the Enriched flag. On-demand and one-time-on-assignment enrichment only — never bulk.
+      </p>
+      <div class="slds-box slds-theme_shade slds-text-body_small">
+        Enriched fields land in Contact Details with an Enriched flag so reps can trust their provenance.
+      </div>
+    </div>
+  </lightning-modal-body>
+  <lightning-modal-footer>
+    <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+    <lightning-button variant="brand" label="Enrich" onclick={handleConfirm} class="slds-m-left_x-small"></lightning-button>
+  </lightning-modal-footer>
+</template>

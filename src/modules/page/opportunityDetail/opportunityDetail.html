@@ -1,0 +1,175 @@
+<template>
+  <div class="slds-p-horizontal_medium slds-p-top_small">
+    <template lwc:if={hasOpp}>
+      <ui-page-header variant="record-home" icon-name="standard:opportunity" object-label={objectLabel} title={oppName} fields={highlightFields}>
+        <div slot="actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <lightning-button-group>
+                <lightning-button label="Edit" variant="neutral"></lightning-button>
+                <template lwc:if={isClosedWon}>
+                  <lightning-button label="Capture Key Project Roles" variant="brand" onclick={handleCaptureRoles}></lightning-button>
+                  <lightning-button label="Log Schedule Extension" variant="neutral" onclick={handleLogExtension}></lightning-button>
+                </template>
+              </lightning-button-group>
+            </div>
+          </div>
+        </div>
+      </ui-page-header>
+
+      <ui-annotation-chip
+        type="best-practice"
+        heading="Compact layout carries Stage + Amount + Close Date + Forecast Category"
+        detail="Leadership context in one glance — the highlights panel surfaces the four fields a forecast review needs.">
+      </ui-annotation-chip>
+
+      <ui-record-path stages={pathStages} current-stage={opp.stage} guidance-map={guidanceMap} onmarkcomplete={handleMarkComplete}></ui-record-path>
+
+      <ui-annotation-chip
+        type="best-practice"
+        heading="Path Guidance carries the sales handbook's entry/exit criteria"
+        detail="Process lives where reps work: Key Fields + Guidance for Success encode the handbook's gates (e.g. Award Letter before Contracting; Signed contract before Closed Won).">
+      </ui-annotation-chip>
+
+      <template lwc:if={showAwardControl}>
+        <div class="slds-box slds-box_x-small slds-m-vertical_x-small slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-wrap">
+          <span class="slds-text-body_small">Gate: an <strong>Award Letter</strong> must be received before entering Contracting.</span>
+          <lightning-button label="Mark Award Letter Received" variant="neutral" icon-name="utility:approval" onclick={handleAwardLetter}></lightning-button>
+        </div>
+      </template>
+
+      <template lwc:if={showAsanaControl}>
+        <div class="c-asana-chrome slds-box slds-m-vertical_x-small">
+          <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-wrap">
+            <div>
+              <p class="c-asana-chrome__label">Presenter control — Asana project status (project-level sync only)</p>
+              <p class="slds-text-body_small">{asanaHint}</p>
+            </div>
+            <lightning-button label="Simulate Asana Status Change" variant="neutral" icon-name="utility:sync" onclick={handleAsana}></lightning-button>
+          </div>
+        </div>
+      </template>
+
+      <!-- SALES layout -->
+      <template lwc:if={isSales}>
+        <ui-annotation-chip
+          type="best-practice"
+          heading="Tabs bundle related lists by job"
+          detail="Quoting, site strategy, contracting, and team each get their own workspace instead of one long scroll.">
+        </ui-annotation-chip>
+        <lightning-tabset variant="scoped" active-tab-value={activeTab} class="slds-m-top_x-small">
+          <lightning-tab label="Details" value="details" onactive={handleTabActive}>
+            <ui-detail-section title="Opportunity Information" fields={oppInfoFields}></ui-detail-section>
+            <ui-detail-section title="Study Information" fields={studyInfoFields}></ui-detail-section>
+            <ui-detail-section title="Contracting" fields={contractingFields}></ui-detail-section>
+            <ui-detail-section title="Cost Info (populated at Closed Won)" fields={costFields}></ui-detail-section>
+            <ui-detail-section title="Onboarding" fields={onboardingFields}></ui-detail-section>
+          </lightning-tab>
+
+          <lightning-tab label="Products & Quoting" value="products" onactive={handleTabActive}>
+            <lightning-card title="Opportunity Products" icon-name="standard:product">
+              <div class="slds-p-horizontal_x-small">
+                <lightning-datatable key-field="id" data={productData} columns={productColumns} draft-values={productDraftValues} onsave={handleProductSave} hide-checkbox-column>
+                </lightning-datatable>
+                <p class="slds-text-body_small slds-text-color_weak slds-p-around_x-small">Inline-edit Quantity and Sales Price. Total = simple sum, no pricing rules.</p>
+              </div>
+            </lightning-card>
+            <div class="slds-m-top_medium">
+              <ui-related-list title="Quotes" icon-name="standard:quotes" columns={quoteColumns} records={quoteRecords} view-all-path="/quotes" empty-text="No quotes yet."></ui-related-list>
+            </div>
+          </lightning-tab>
+
+          <lightning-tab label="Sites & Contacts" value="sites" onactive={handleTabActive}>
+            <ui-annotation-chip
+              type="best-practice"
+              heading="Filtered related lists split engaged vs non-engaged sites"
+              detail="Site strategy is readable at a glance — engaged and non-engaged Opportunity Sites get separate lists.">
+            </ui-annotation-chip>
+            <div class="slds-m-bottom_medium">
+              <ui-related-list title="Engaged Sites" icon-name="standard:location" columns={siteColumns} records={engagedSites} empty-text="No engaged sites."></ui-related-list>
+            </div>
+            <div class="slds-m-bottom_medium">
+              <ui-related-list title="Non-Engaged Sites" icon-name="standard:location" columns={siteColumns} records={nonEngagedSites} empty-text="No non-engaged sites."></ui-related-list>
+            </div>
+            <ui-related-list title="Opportunity Contact Roles" icon-name="standard:contact" columns={contactRoleColumns} records={contactRoleRecords} empty-text="No contact roles."></ui-related-list>
+          </lightning-tab>
+
+          <lightning-tab label="Contracting" value="contracting" onactive={handleTabActive}>
+            <div class="slds-m-bottom_medium">
+              <ui-related-list title="Sales Contracts" icon-name="standard:contract" columns={contractColumns} records={contractRecords} view-all-path="/sales-contracts" empty-text="No contracts yet."></ui-related-list>
+            </div>
+            <ui-annotation-chip
+              type="best-practice"
+              heading="Field History gives stage-duration and audit visibility without custom components"
+              detail="Opportunity Field History is standard configuration — no custom LWC needed to show who changed what, when.">
+            </ui-annotation-chip>
+            <ui-related-list title="Opportunity Field History" icon-name="standard:history" columns={historyColumns} records={historyRecords} empty-text="No field history yet."></ui-related-list>
+          </lightning-tab>
+
+          <lightning-tab label="Team & Activity" value="team" onactive={handleTabActive}>
+            <lightning-card title="Opportunity Team" icon-name="standard:team_member">
+              <div class="slds-p-horizontal_small">
+                <div class="slds-grid slds-gutters_x-small slds-grid_vertical-align-end slds-wrap slds-m-bottom_small">
+                  <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12">
+                    <lightning-combobox label="User" placeholder="Select a user" value={newTeamUser} options={userOptions} onchange={handleNewUser}></lightning-combobox>
+                  </div>
+                  <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+                    <lightning-combobox label="Team Role" value={newTeamRole} options={roleOptions} onchange={handleNewRole}></lightning-combobox>
+                  </div>
+                  <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12">
+                    <lightning-button label="Add Member" variant="brand" onclick={handleAddTeam} class="slds-m-top_x-small"></lightning-button>
+                  </div>
+                </div>
+                <lightning-datatable key-field="id" data={teamData} columns={teamColumns} onrowaction={handleTeamRowAction} hide-checkbox-column>
+                </lightning-datatable>
+              </div>
+            </lightning-card>
+            <div class="slds-m-top_medium">
+              <lightning-card title="Activity Timeline" icon-name="standard:task">
+                <div class="slds-p-horizontal_medium">
+                  <ui-activity-timeline items={activityItems}></ui-activity-timeline>
+                </div>
+              </lightning-card>
+            </div>
+          </lightning-tab>
+        </lightning-tabset>
+      </template>
+
+      <!-- CHANGE ORDER layout -->
+      <template lwc:if={isChangeOrder}>
+        <ui-annotation-chip
+          type="best-practice"
+          heading="Separate record type + page layout"
+          detail="Change orders show only the fields that matter to an extension — a distinct record type and layout, not a cluttered clone of the Sales opportunity.">
+        </ui-annotation-chip>
+        <lightning-tabset variant="scoped" active-tab-value={activeTab} class="slds-m-top_x-small">
+          <lightning-tab label="Details" value="details" onactive={handleTabActive}>
+            <ui-detail-section title="Opportunity Information" fields={oppInfoFields}></ui-detail-section>
+            <ui-detail-section title="Change Order Information" fields={changeOrderFields}></ui-detail-section>
+          </lightning-tab>
+          <lightning-tab label="Products" value="products" onactive={handleTabActive}>
+            <lightning-card title="Opportunity Products (time-based lines)" icon-name="standard:product">
+              <div class="slds-p-horizontal_x-small">
+                <lightning-datatable key-field="id" data={productData} columns={productColumns} draft-values={productDraftValues} onsave={handleProductSave} hide-checkbox-column>
+                </lightning-datatable>
+              </div>
+            </lightning-card>
+          </lightning-tab>
+          <lightning-tab label="Contracting" value="contracting" onactive={handleTabActive}>
+            <div class="slds-m-bottom_medium">
+              <ui-related-list title="Sales Contracts (Change Order)" icon-name="standard:contract" columns={contractColumns} records={contractRecords} empty-text="No change-order contracts yet."></ui-related-list>
+            </div>
+            <ui-related-list title="Opportunity Field History" icon-name="standard:history" columns={historyColumns} records={historyRecords} empty-text="No field history yet."></ui-related-list>
+          </lightning-tab>
+        </lightning-tabset>
+      </template>
+    </template>
+
+    <template lwc:else>
+      <div class="slds-illustration slds-p-around_large slds-text-align_center">
+        <p class="slds-text-heading_medium">Opportunity not found</p>
+        <lightning-button class="slds-m-top_small" label="Back to Opportunities" variant="brand" onclick={handleBack}></lightning-button>
+      </div>
+    </template>
+  </div>
+</template>

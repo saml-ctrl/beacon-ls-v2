@@ -1,0 +1,58 @@
+<template>
+  <div class="slds-is-relative c-bell">
+    <lightning-button-icon
+      icon-name="utility:notification"
+      variant="bare"
+      size="large"
+      alternative-text="Notifications"
+      title={bellTitle}
+      onclick={toggle}
+      class="lightning-button-icon_custom">
+    </lightning-button-icon>
+    <template lwc:if={hasUnread}>
+      <span class="c-bell__badge" aria-label="Unread notifications">{badgeLabel}</span>
+    </template>
+
+    <div class={trayClass}>
+      <div class="slds-dropdown__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-p-around_small slds-border_bottom">
+        <span class="slds-text-heading_small">Notifications</span>
+        <button type="button" class="slds-button slds-text-body_small" onclick={handleMarkAll}>Mark all as read</button>
+      </div>
+
+      <div class="slds-p-horizontal_small slds-p-top_x-small">
+        <ui-annotation-chip
+          type="best-practice"
+          heading="Standard Custom Notifications sent by record-triggered Flows"
+          detail="Each of these is a standard Custom Notification fired by a record-triggered Flow — configuration, not code. The persona label shows who receives it.">
+        </ui-annotation-chip>
+      </div>
+
+      <div class="c-tray__list slds-dropdown_length-10 slds-scrollable_y">
+        <template lwc:if={hasNotifications}>
+          <ul>
+            <template for:each={items} for:item="n">
+              <li key={n.id} class={n.itemClass} data-id={n.id} onclick={handleItemClick}>
+                <div class="slds-media">
+                  <div class="slds-media__figure">
+                    <lightning-icon icon-name={n.iconName} size="small" alternative-text="Notification"></lightning-icon>
+                  </div>
+                  <div class="slds-media__body">
+                    <p class="slds-text-body_small slds-text-color_weak">{n.persona} · {n.time}</p>
+                    <p class="slds-text-body_regular"><strong>{n.title}</strong></p>
+                    <p class="slds-text-body_small">{n.body}</p>
+                  </div>
+                </div>
+              </li>
+            </template>
+          </ul>
+        </template>
+        <template lwc:else>
+          <div class="slds-p-around_large slds-text-align_center slds-text-color_weak">
+            <lightning-icon icon-name="utility:notification" size="small" class="slds-m-bottom_x-small"></lightning-icon>
+            <p class="slds-text-body_small">No notifications yet. Handoffs appear here as the journey runs.</p>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</template>

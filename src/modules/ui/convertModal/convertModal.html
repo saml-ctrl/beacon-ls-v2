@@ -1,0 +1,59 @@
+<template>
+  <lightning-modal-header label="Convert Lead (KOL)"></lightning-modal-header>
+  <lightning-modal-body>
+    <ui-flow-progress steps={steps} current={step}></ui-flow-progress>
+
+    <div class="slds-p-around_medium">
+      <template lwc:if={isStep0}>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+          Duplicate check found potential matches. Choose whether to use the existing Account and Contact or create new records.
+        </p>
+        <lightning-radio-group
+          label="Matched records"
+          options={dupOptions}
+          value={dupChoice}
+          onchange={handleDup}
+          type="radio">
+        </lightning-radio-group>
+      </template>
+
+      <template lwc:if={isStep1}>
+        <lightning-input label="Account Name" value={accountName} onchange={handleAccount} class="slds-m-bottom_small"></lightning-input>
+        <lightning-input label="Contact" value={lead.name} read-only class="slds-m-bottom_small"></lightning-input>
+        <lightning-input label="Opportunity Name" value={opportunityName} onchange={handleOppName} class="slds-m-bottom_small"></lightning-input>
+        <lightning-input
+          type="date"
+          label="Close Date"
+          value={closeDate}
+          onchange={handleCloseDate}
+          required
+          message-when-value-missing="Close Date is required to convert.">
+        </lightning-input>
+        <template lwc:if={closeDateError}>
+          <p class="slds-text-color_error slds-text-body_small slds-m-top_xx-small">Close Date is required to convert this lead.</p>
+        </template>
+      </template>
+
+      <template lwc:if={isStep2}>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">The single conversion flow will establish:</p>
+        <ul class="slds-list_dotted">
+          <template for:each={reviewItems} for:item="item">
+            <li key={item.key} class="slds-p-vertical_xxx-small"><strong>{item.label}:</strong> {item.value}</li>
+          </template>
+        </ul>
+      </template>
+    </div>
+  </lightning-modal-body>
+  <lightning-modal-footer>
+    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+      <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+      <div>
+        <template lwc:if={isFirst}></template>
+        <template lwc:else>
+          <lightning-button label="Back" onclick={handleBack} class="slds-m-right_x-small"></lightning-button>
+        </template>
+        <lightning-button variant="brand" label={nextLabel} onclick={handleNext}></lightning-button>
+      </div>
+    </div>
+  </lightning-modal-footer>
+</template>

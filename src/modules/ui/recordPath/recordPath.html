@@ -1,0 +1,50 @@
+<template>
+  <div class="slds-path slds-m-vertical_small">
+    <div class="slds-grid slds-path__track">
+      <div class="slds-grid slds-has-flexi-truncate">
+        <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+          <template for:each={items} for:item="item">
+            <li key={item.key} class={item.className} role="presentation">
+              <a class="slds-path__link" href="#" role="option" data-stage={item.stage} onclick={handleStageClick} tabindex={item.tabindex}>
+                <span class="slds-path__stage">
+                  <lightning-icon icon-name="utility:check" size="x-small" class="slds-icon-text-default"></lightning-icon>
+                </span>
+                <span class="slds-path__title slds-truncate" title={item.stage}>{item.stage}</span>
+              </a>
+            </li>
+          </template>
+        </ul>
+      </div>
+      <div class="slds-grid slds-path__action slds-p-left_small">
+        <button class="slds-button slds-button_brand slds-path__mark-complete" onclick={handleAction}>
+          <lightning-icon icon-name="utility:check" size="x-small" class="slds-button__icon slds-button__icon_left" variant="inverse"></lightning-icon>
+          {actionLabel}
+        </button>
+      </div>
+    </div>
+
+    <div class="slds-path__content slds-p-around_medium slds-box slds-box_x-small slds-m-top_x-small">
+      <div class="slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_7-of-12">
+          <p class="slds-text-title_caps slds-m-bottom_xx-small">Key Fields · {selectedTitle}</p>
+          <template lwc:if={hasKeyFields}>
+            <div class="slds-grid slds-wrap slds-gutters_x-small">
+              <template for:each={keyFields} for:item="field">
+                <div key={field.key} class="slds-col slds-size_1-of-1 slds-small-size_1-of-2 slds-p-vertical_xx-small">
+                  <lightning-input label={field.label} value={field.value} read-only variant="label-stacked"></lightning-input>
+                </div>
+              </template>
+            </div>
+          </template>
+          <template lwc:else>
+            <p class="slds-text-body_small slds-text-color_weak">No Key Fields for this step.</p>
+          </template>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12">
+          <p class="slds-text-title_caps slds-m-bottom_xx-small">Guidance for Success</p>
+          <p class="slds-text-body_regular">{guidanceText}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,66 @@
+:host {
+  display: block;
+}
+.c-chip-wrap {
+  display: block;
+}
+.c-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 1rem;
+  border: 1px solid transparent;
+  padding: 0.15rem 0.6rem 0.15rem 0.5rem;
+  font-size: 0.7rem;
+  line-height: 1.2;
+  cursor: pointer;
+  max-width: 100%;
+  text-align: left;
+  background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+  color: var(--slds-g-color-neutral-base-10, #181818);
+}
+.c-chip:hover {
+  filter: brightness(0.97);
+}
+.c-chip__type {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 0.62rem;
+}
+.c-chip__heading {
+  font-weight: 400;
+}
+.c-chip__icon {
+  --slds-c-icon-color-foreground-default: currentColor;
+}
+
+/* Best Practice — blue */
+.c-chip_best-practice {
+  background: #eaf3ff;
+  color: #032d60;
+  border-color: #78b0ff;
+}
+/* Integration — neutral */
+.c-chip_integration {
+  background: #f3f3f3;
+  color: #444;
+  border-color: #c9c9c9;
+}
+/* Open Decision — amber */
+.c-chip_open-decision {
+  background: #fef5e7;
+  color: #6b4a00;
+  border-color: #f5c66b;
+}
+
+.c-chip__detail {
+  max-width: 42rem;
+  background: var(--slds-g-color-neutral-base-100, #fff);
+  border-left: 3px solid #78b0ff;
+}
+.c-chip__detail_integration {
+  border-left-color: #c9c9c9;
+}
+.c-chip__detail_open-decision {
+  border-left-color: #f5c66b;
+}

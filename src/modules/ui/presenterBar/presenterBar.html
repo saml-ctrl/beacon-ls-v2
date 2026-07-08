@@ -1,0 +1,20 @@
+<template>
+  <div class="c-presenter">
+    <div class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small slds-wrap">
+      <div class="slds-col slds-no-flex">
+        <span class="c-presenter__badge">Journey · {stepLabel}</span>
+      </div>
+      <div class="slds-col c-presenter__title">
+        <lightning-icon icon-name="utility:pinned" size="x-small" variant="inverse" class="slds-m-right_x-small"></lightning-icon>
+        <span>{title}</span>
+      </div>
+      <div class="slds-col slds-no-flex c-presenter__actions">
+        <lightning-button-group>
+          <lightning-button label="Back" icon-name="utility:chevronleft" onclick={handleBack} disabled={isFirst}></lightning-button>
+          <lightning-button label="Next" icon-name="utility:chevronright" icon-position="right" variant="brand" onclick={handleNext} disabled={isLast}></lightning-button>
+        </lightning-button-group>
+        <lightning-button label="Reset Demo" icon-name="utility:refresh" variant="destructive-text" onclick={handleReset} class="slds-m-left_x-small c-presenter__reset"></lightning-button>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,45 @@
+.c-bell {
+  display: inline-block;
+}
+.c-bell__badge {
+  position: absolute;
+  top: -0.25rem;
+  right: -0.35rem;
+  min-width: 1.05rem;
+  height: 1.05rem;
+  padding: 0 0.25rem;
+  border-radius: 0.75rem;
+  background: #ea001e;
+  color: #fff;
+  font-size: 0.65rem;
+  line-height: 1.05rem;
+  text-align: center;
+  font-weight: 700;
+  pointer-events: none;
+}
+.c-tray {
+  width: 22rem;
+  max-width: 92vw;
+  margin-top: 0.35rem;
+}
+.c-tray__list {
+  max-height: 26rem;
+}
+.c-tray__list ul {
+  display: block;
+}
+.c-tray__item {
+  display: block;
+  cursor: pointer;
+  border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+  text-align: left;
+}
+.c-tray__item:hover {
+  background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+}
+.c-tray__item_unread {
+  background: #eef4ff;
+}
+.c-tray__item_unread:hover {
+  background: #e3edff;
+}
