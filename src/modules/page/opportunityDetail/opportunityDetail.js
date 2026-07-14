@@ -1,5 +1,5 @@
 import { LightningElement } from 'lwc';
-import { getCurrentRoute, navigate } from '../../../router';
+import { getCurrentRoute, navigate, subscribe } from '../../../router';
 import Toast from 'lightning/toast';
 import {
   onStoreChange,
@@ -45,9 +45,20 @@ export default class OpportunityDetail extends LightningElement {
     const t = consumeNavIntent(this.oppId);
     if (t) this.activeTab = t;
     this._unsub = onStoreChange(() => this.load());
+    // Record→record navigation reuses this same component (LWC won't re-run
+    // connectedCallback), so react to route changes to refresh the record.
+    this._routeUnsub = subscribe((route) => {
+      const newId = route && route.params && route.params.id;
+      if (route && route.component === 'page-opportunity-detail' && newId && newId !== this.oppId) {
+        this.oppId = newId;
+        const nt = consumeNavIntent(newId);
+        this.activeTab = nt || 'details';
+        this.load();
+      }
+    });
     this.load();
   }
-  disconnectedCallback() { this._unsub?.(); }
+  disconnectedCallback() { this._unsub?.(); this._routeUnsub?.(); }
   load() { this.opp = getOpportunityById(this.oppId); }
 
   get hasOpp() { return !!this.opp; }
